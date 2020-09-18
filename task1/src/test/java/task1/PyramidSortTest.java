@@ -1,5 +1,6 @@
 package task1;
 import java.util.Arrays;
+import java.util.Random;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,8 +30,9 @@ class PyramidSortTest {
     @Test
     public void RandomNumbersTest(){
         int[] arr = new int[1000];
+        var rand = new Random(0);
         for(int i = 0;i<arr.length;i++){
-            arr[i] = (int)(Math.random()*2000) - 1000;
+            arr[i] = rand.nextInt();
         }
         int[] expected = Arrays.copyOf(arr, arr.length);
         Arrays.sort(expected);
@@ -55,8 +57,9 @@ class PyramidSortTest {
     @Test
     public void RandomNumbersMaxLengthTest(){
         int[] arr = new int[30000];
+        var rand = new Random(0);
         for(int i = 0;i<arr.length;i++){
-            arr[i] = (int)(Math.random()*(Integer.MAX_VALUE-1)) - (Integer.MAX_VALUE-1)/2;
+            arr[i] = rand.nextInt();
         }
 
         int[] expected = Arrays.copyOf(arr, arr.length);
