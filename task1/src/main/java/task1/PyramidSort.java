@@ -5,8 +5,9 @@ public class PyramidSort {
         int n = arr.length;
 
         // Построение max-heap
-        for (int i = n / 2 - 1; i >= 0; i--)
+        for (int i = n / 2 - 1; i >= 0; i--) {
             heapify(arr, n, i);
+        }
 
         // Поочередно извлекаем элементы из кучи
         for (int i = n - 1; i >= 0; i--) {
