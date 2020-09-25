@@ -1,42 +1,45 @@
 package task1;
 
 public class PyramidSort {
+    /**
+    * @param arr input array collection
+    */
     public void sort(int[] arr) {
         int n = arr.length;
 
-        // Построение max-heap
+        // building max-heap
         for (int i = n / 2 - 1; i >= 0; i--) {
             heapify(arr, n, i);
         }
 
-        // Поочередно извлекаем элементы из кучи
+        // Forech elem from heap take it from collection
         for (int i = n - 1; i >= 0; i--) {
-            // Перемещаем текущий корень в конец
+            // Swap current and root elements
             int temp = arr[0];
             arr[0] = arr[i];
             arr[i] = temp;
 
-            // Вызываем процедуру heapify на уменьшенной куче
+            // Call heapify on reduced heap
             heapify(arr, i, 0);
         }
     }
 
-    // Преобразования в двоичную кучу поддерева с корневым узлом i
-    // n - размер кучи
+    // Binary heap conversions of a subtree rooted with i
+    // n - binary heap size
     private void heapify(int[] arr, int n, int subtreeRootNode) {
         int largestChild = subtreeRootNode;
         int leftChild = 2 * subtreeRootNode + 1;
         int rightChild = 2 * subtreeRootNode + 2;
 
-        // Если левый дочерний элемент больше корня
+        // If left child bigger than root
         if (leftChild < n && arr[leftChild] > arr[largestChild])
             largestChild = leftChild;
 
-        // Если правый дочерний элемент больше корня
+        // If right child bigger than root
         if (rightChild < n && arr[rightChild] > arr[largestChild])
             largestChild = rightChild;
 
-        // Если самый большой элемент не корень
+        // If the largest elem is not a root elem
         if (largestChild != subtreeRootNode) {
             int tmp = arr[subtreeRootNode];
             arr[subtreeRootNode] = arr[largestChild];
