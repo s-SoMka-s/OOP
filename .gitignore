@@ -37,8 +37,5 @@ Thumbs.db
 .idea/datasources.xml
 .idea/dataSources.ids
 
-build/generated/
-build/libs/
-build/reports/
-build/test-results/
-build/tmp/
+build/
+.gradle/
