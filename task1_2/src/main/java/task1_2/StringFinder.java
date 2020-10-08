@@ -8,6 +8,12 @@ import java.util.HashSet;
 
 
 public class StringFinder {
+    /**
+     * @param sample substring needs to be found
+     * @param inputStream where we should find our sample
+     * @return ArrayList<Long> list of positions in our stream
+     * @throws IOException
+     */
     public static ArrayList<Long> Find(String sample, InputStream inputStream) throws IOException {
         var prefixFunc = prefixFunction(sample);
 

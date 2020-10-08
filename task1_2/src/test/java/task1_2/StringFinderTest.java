@@ -1,10 +1,8 @@
 package task1_2;
 
 import org.junit.jupiter.api.Test;
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +21,13 @@ class StringFinderTest {
 
             var fis = new FileInputStream(file);
             var res = StringFinder.Find(sample, fis);
+
+            var expected = new ArrayList<Long>();
+            for(long i = 0;i<=30;i+=2){
+                expected.add(i);
+            }
+
+            assertArrayEquals(res.toArray(), expected.toArray());
 
             for(var elem : res){
                 System.out.println(elem);
