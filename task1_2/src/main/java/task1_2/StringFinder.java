@@ -7,14 +7,10 @@ import java.util.HashSet;
 
 
 public class StringFinder {
-    public static HashSet<Long> Find(String sample, String file) throws IOException {
+    public static HashSet<Long> Find(String sample, InputStream inputStream) throws IOException {
         var prefixFunc = prefixFunction(sample);
 
-        final int GIGABYTE = 1024 * 1024 * 1024;
-
-        try (var fileReader = new FileReader(file, StandardCharsets.UTF_8))
-        {
-            var buffSize = Math.min(sample.length() * 4, GIGABYTE);
+            var buffSize = sample.length() * 4;
             var buffer = new char[buffSize];
             var buffOffset = 0;
             var buffCapacity = buffer.length;
@@ -22,13 +18,14 @@ public class StringFinder {
             var result = new HashSet<Long>();
 
             int runCounter = 0;
+            var fileReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
             // считывание текста в буффер
             while (fileReader.read(buffer, buffOffset, buffCapacity) != -1) {
                 var sourceStr = String.valueOf(buffer);
+                var inFileOffset = runCounter * (long)buffOffset;
 
-                KMPSearch(sourceStr, sample, runCounter * (long)buffOffset, prefixFunc)
-                        .forEach(x -> result.add(x));
+                result.addAll(KMPSearch(buffer, sample, inFileOffset, prefixFunc));
 
                 buffOffset = buffer.length / 2;
                 buffCapacity = buffOffset;
@@ -46,7 +43,7 @@ public class StringFinder {
             }
 
             return result;
-        }
+
     }
 
     private static int[] prefixFunction(String sample) {
@@ -63,15 +60,15 @@ public class StringFinder {
         return values;
     }
 
-    private static ArrayList<Long> KMPSearch(String text, String sample, long inFileOffset, int[] prefixFunc) {
+    private static ArrayList<Long> KMPSearch(char[] textBuff, String sample, long inFileOffset, int[] prefixFunc) {
         var result = new ArrayList<Long>();
 
         int i = 0; // позиция внутри текста
         int j = 0; // позиция внутри образца
 
-        while (i < text.length()) {
+        while (i < textBuff.length) {
             // прикладываем образец к тексту
-            if (sample.charAt(j) == text.charAt(i)) {
+            if (sample.charAt(j) == textBuff[i]) {
                 j++;
                 i++;
             }
@@ -80,7 +77,7 @@ public class StringFinder {
                 result.add(inFileOffset + (long)(i - j));
                 j = prefixFunc[j - 1];
             }// образец не совпал
-            else if ((i < text.length()) && (sample.charAt(j) != text.charAt(i))) {
+            else if ((i < textBuff.length) && (sample.charAt(j) != textBuff[i])) {
                 if (j != 0) {
                     j = prefixFunc[j - 1];
                 } else {
