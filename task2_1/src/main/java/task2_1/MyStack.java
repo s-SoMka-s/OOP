@@ -1,43 +1,87 @@
 package task2_1;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
-public class MyStack<T> implements Iterable<T>{
-    private ArrayList<T> list;
+/**
+ * Just one of the stack implementations,
+ * not using standard collections
+ */
+public class MyStack implements Iterable{
+    private Object[] container;
+    private int capacity;
+    private int elementCount;
 
-    public MyStack(){
-        list = new ArrayList<T>();
+    public MyStack(int newCapacity){
+        capacity = newCapacity;
+        elementCount = 0;
+        container = new Object[newCapacity];
     }
 
-    public void push(T elem){
-        list.add(elem);
-    }
-
-    public T pop(){
-        if(list.isEmpty()){
-            return null;
+    /**
+     * The method guarantees that there is free space on the stack
+     * and adds a new element to the top
+     * @param elem new element for stack
+     */
+    public void push(Object elem){
+        if(elementCount >= capacity){
+            capacity = capacity * 2 + 1;
+            container = Arrays.copyOf(container, capacity);
         }
 
-        return list.remove(list.size() - 1);
+        container[elementCount++] = elem;
     }
 
-    public T top() throws  IndexOutOfBoundsException{
-        if(list.isEmpty()){
-            return null;
+    /**
+     * method removes the top element and returns it
+     * @return the top element
+     * @throws IndexOutOfBoundsException if stack is empty
+     */
+    public Object pop() throws IndexOutOfBoundsException{
+        if(elementCount == 0){
+            throw new IndexOutOfBoundsException();
         }
 
-        return list.get(list.size() - 1);
+        var res = container[elementCount - 1];
+        elementCount--;
+
+        return res;
     }
 
-    public int getSize(){
-        return list.size();
+    /**
+     * method gets the top element and returns it, not removing
+     * @return the top element
+     * @throws IndexOutOfBoundsException if stack is empty
+     */
+    public Object top() throws  IndexOutOfBoundsException{
+        if(elementCount == 0){
+            throw new IndexOutOfBoundsException();
+        }
+
+        return container[elementCount - 1];
+    }
+
+    /**
+     * method returns how many elements stack can accommodate
+     * if it is no elements in it
+     * @return the stack capacity
+     */
+    public int getCapacity(){
+        return capacity;
+    }
+
+    /**
+     * method returns how many elements are in stack now
+     * @return number of elements
+     */
+    public int howManyElements(){
+        return elementCount;
     }
 
     @Override
-    public Iterator<T> iterator(){
-        return new Iterator<T>() {
-            int pos = list.size() - 1;
+    public Iterator iterator(){
+        return new Iterator() {
+            int pos = elementCount - 1;
 
             @Override
             public boolean hasNext() {
@@ -45,8 +89,12 @@ public class MyStack<T> implements Iterable<T>{
             }
 
             @Override
-            public T next() {
-                return hasNext() ? list.get(pos--) : null;
+            public Object next() throws IndexOutOfBoundsException{
+                if(pos < 0){
+                    throw new IndexOutOfBoundsException();
+                }
+
+                return container[pos--];
             }
         };
     }

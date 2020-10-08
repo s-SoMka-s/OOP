@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MyStackTest {
     @Test
     public void Test1(){
-        var myLittleStack = new MyStack<Object>();
+        var myLittleStack = new MyStack(1);
         myLittleStack.push("122");
         myLittleStack.push("222");
         myLittleStack.push("322");
@@ -15,9 +15,9 @@ class MyStackTest {
         myLittleStack.pop();
 
         assertEquals(myLittleStack.top(), "122");
-        assertEquals(myLittleStack.getSize(), 1);
+        assertEquals(myLittleStack.howManyElements(), 1);
         assertEquals(myLittleStack.pop(), "122");
-        assertEquals(myLittleStack.getSize(), 0);
+        assertEquals(myLittleStack.howManyElements(), 0);
 
     }
 }
