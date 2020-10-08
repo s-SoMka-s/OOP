@@ -18,14 +18,16 @@ public class StringFinder {
 
         var result = new ArrayList<Long>();
 
-        int runCounter = 0;
+        var runCounter = 0;
         var fileReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         // считывание текста в буффер
-        while (fileReader.read(buffer, buffOffset, buffCapacity) != -1) {
+        long readed = 0;
+        while ((readed = fileReader.read(buffer, buffOffset, buffCapacity)) != -1) {
             var inFileOffset = runCounter * (long) buffCapacity;
+            var textLength = readed + buffOffset;
 
-            var tmp = KMPSearch(buffer, sample, inFileOffset, prefixFunc);
+            var tmp = KMPSearch(buffer, textLength, sample, inFileOffset, prefixFunc);
 
             // проверяем на дубликаты
             if(result.size()>0 && (tmp.get(0) == result.get(result.size()-1))){
@@ -69,13 +71,13 @@ public class StringFinder {
         return values;
     }
 
-    private static ArrayList<Long> KMPSearch(char[] textBuff, String sample, long inFileOffset, int[] prefixFunc) {
+    private static ArrayList<Long> KMPSearch(char[] textBuff, long textLength, String sample, long inFileOffset, int[] prefixFunc) {
         var result = new ArrayList<Long>();
 
         int i = 0; // позиция внутри текста
         int j = 0; // позиция внутри образца
 
-        while (i < textBuff.length) {
+        while (i < textLength) {
             // прикладываем образец к тексту
             if (sample.charAt(j) == textBuff[i]) {
                 j++;
@@ -86,7 +88,7 @@ public class StringFinder {
                 result.add(inFileOffset + (long) (i - j));
                 j = prefixFunc[j - 1];
             }// образец не совпал
-            else if ((i < textBuff.length) && (sample.charAt(j) != textBuff[i])) {
+            else if ((i < textLength) && (sample.charAt(j) != textBuff[i])) {
                 if (j != 0) {
                     j = prefixFunc[j - 1];
                 } else {
