@@ -22,7 +22,6 @@ public class StringFinder {
 
             // считывание текста в буффер
             while (fileReader.read(buffer, buffOffset, buffCapacity) != -1) {
-                var sourceStr = String.valueOf(buffer);
                 var inFileOffset = runCounter * (long)buffOffset;
 
                 result.addAll(KMPSearch(buffer, sample, inFileOffset, prefixFunc));
