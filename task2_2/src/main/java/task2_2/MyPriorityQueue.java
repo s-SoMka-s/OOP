@@ -1,34 +1,41 @@
 package task2_2;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
-public class MyPriorityQueue<KeyType, ValueType> {
+public class MyPriorityQueue<KeyType extends Comparable<KeyType>, ValueType> {
     private Node<KeyType, ValueType>[] container;
     private int elementsCount = 0;
-    private int currPriority = 0;
     private int capacity;
+    private final Comparator<? super KeyType> comparator;
 
-    public MyPriorityQueue(int initialCapacity){
+    public MyPriorityQueue(int initialCapacity, Comparator<? super KeyType> newComparator){
         container = new Node[initialCapacity];
         capacity = initialCapacity;
+        comparator = newComparator;
+    }
+
+    public MyPriorityQueue(Comparator<? super KeyType> newComparator){
+        container = new Node[1];
+        capacity = 1;
+        comparator = newComparator;
     }
 
     public MyPriorityQueue(){
         container = new Node[1];
         capacity = 1;
+        comparator = Comparator.naturalOrder();
     }
 
     public void insert(KeyType newKey, ValueType newValue){
-        var node = new Node(newKey, newValue, currPriority++);
+        var node = new Node(newKey, newValue);
         if(elementsCount >= capacity){
             capacity = capacity * 2 + 1;
             container = Arrays.copyOf(container, capacity);
         }
 
-        container[elementsCount] = node;
-
-        heapify(container, elementsCount + 1, elementsCount);
-        elementsCount++;
+        container[elementsCount++] = node;
+        siftUpLast();
     }
 
     public Node<KeyType, ValueType> extractMax(){
@@ -36,46 +43,59 @@ public class MyPriorityQueue<KeyType, ValueType> {
         container[0] = container[elementsCount--];
         container[elementsCount] = res;
 
-        heapify(container, elementsCount, 0);
+        heapify(0);
 
         return res;
     }
 
+    private void siftUpLast(){
+        int i = elementsCount - 1;
+        int parent = (i - 1) / 2;
+
+        while (i > 0 && comparator.compare(container[parent].key, container[i].key) < 0)
+        {
+            var temp = container[i];
+            container[i] = container[parent];
+            container[parent] = temp;
+
+            i = parent;
+            parent = (i - 1) / 2;
+        }
+    }
+
     // Binary heap conversions of a subtree rooted with i
     // n - binary heap size
-    private void heapify(Node[] arr, int n, int subtreeRootNode) {
+    private void heapify(int subtreeRootNode) {
         int largestChild = subtreeRootNode;
         int leftChild = 2 * subtreeRootNode + 1;
         int rightChild = 2 * subtreeRootNode + 2;
 
         // If left child bigger than root
-        if (leftChild < n && arr[leftChild].priority > arr[largestChild].priority)
+        if (leftChild < elementsCount && comparator.compare(container[leftChild].key, container[largestChild].key) > 0)
             largestChild = leftChild;
 
         // If right child bigger than root
-        if (rightChild < n && arr[rightChild].priority > arr[largestChild].priority)
+        if (rightChild < elementsCount && comparator.compare(container[rightChild].key, container[largestChild].key) > 0)
             largestChild = rightChild;
 
         // If the largest elem is not a root elem
         if (largestChild != subtreeRootNode) {
-            var tmp = arr[subtreeRootNode];
-            arr[subtreeRootNode] = arr[largestChild];
-            arr[largestChild] = tmp;
+            var tmp = container[subtreeRootNode];
+            container[subtreeRootNode] = container[largestChild];
+            container[largestChild] = tmp;
 
             // Рекурсивно преобразуем в двоичную кучу затронутое поддерево
-            heapify(arr, n, largestChild);
+            heapify(largestChild);
         }
     }
 
-    public class Node<KeyType, ValueType> {
+    public class Node<KeyType extends Comparable<KeyType>, ValueType> {
         private KeyType key;
         private ValueType value;
-        private int priority;
 
-        public Node(KeyType newKey, ValueType newValue, int newPriority){
+        public Node(KeyType newKey, ValueType newValue){
             key = newKey;
             value = newValue;
-            priority = newPriority;
         }
 
         public KeyType getKey(){
