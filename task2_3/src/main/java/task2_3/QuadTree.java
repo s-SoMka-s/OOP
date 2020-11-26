@@ -11,6 +11,7 @@ public class QuadTree {
     private QuadTree southEast;
     private boolean isDivided;
     private ArrayList<Point> points;
+    private QuadTree parent;
 
     /**
      * Конструктор для создания дерева квадрантов
@@ -34,8 +35,9 @@ public class QuadTree {
         this.isDivided = false;
         this.southEast = null;
         this.southWest = null;
-        this.northEast = null;
         this.northWest = null;
+        this.northEast = null;
+        this.parent = null;
     }
 
     /**
@@ -91,11 +93,62 @@ public class QuadTree {
                 this.southWest.insert(point));
     }
 
+
+    /**
+     * Удаляет точку с текущими координатами
+     *
+     * @param point  - координаты, по которым надо удалить
+     * @return false - удалить не удалось
+     * true - удалить удалось успешно
+     */
     public boolean delete(Point point) {
+        // Точка не попадает в границы - в пекло её
         if (!this.boundary.contains(point)) {
             return false;
         }
-        return true;
+
+        // Точка совпала с узлом квадрата
+        if (Double.compare(point.x, this.boundary.centerX) == 0 && Double.compare(point.y, this.boundary.centerY) == 0) {
+            // Удаляем всех детей этого узла
+            this.northWest = null;
+            this.northEast = null;
+            this.southWest = null;
+            this.southEast = null;
+
+            // Проверим, пустые ли у него братья
+            if (this.parent != null) {
+                this.parent = this.parent.rebalanced();
+            }
+
+            return true;
+        }
+
+        // Нельзя дальше делить - в пекло эту таску
+        if (!this.isDivided) {
+            return false;
+        }
+
+        return (this.southEast.delete(point) ||
+                this.southWest.delete(point) ||
+                this.northWest.delete(point) ||
+                this.northEast.delete(point));
+    }
+
+    private QuadTree rebalanced() {
+        var subTrees = this.getSubtrees();
+        if (subTrees.isEmpty()) {
+            return null;
+        }
+
+        var isChildrenEmpty = this.northEast.isDivided || this.northWest.isDivided || this.southEast.isDivided || this.southWest.isDivided;
+
+        if (isChildrenEmpty) {
+            this.isDivided = false;
+
+            this.parent.rebalanced();
+        }
+
+        return this;
     }
 
     /**
@@ -138,14 +191,18 @@ public class QuadTree {
 
         var neBoundary = new RectBoundary(x + w / 2, y - h / 2, w / 2, h / 2);
         this.northEast = new QuadTree(neBoundary, this.capacity);
+        this.northEast.parent = this;
 
         var nwBoundary = new RectBoundary(x - w / 2, y - h / 2, w / 2, h / 2);
         this.northWest = new QuadTree(nwBoundary, this.capacity);
+        this.northWest.parent = this;
 
         var seBoundary = new RectBoundary(x + w / 2, y + h / 2, w / 2, h / 2);
         this.southEast = new QuadTree(seBoundary, this.capacity);
+        this.southEast.parent = this;
 
         var swBoundary = new RectBoundary(x - w / 2, y + h / 2, w / 2, h / 2);
         this.southWest = new QuadTree(swBoundary, this.capacity);
+        this.southWest = parent;
     }
 }
