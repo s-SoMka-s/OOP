@@ -203,6 +203,6 @@ public class QuadTree {
 
         var swBoundary = new RectBoundary(x - w / 2, y + h / 2, w / 2, h / 2);
         this.southWest = new QuadTree(swBoundary, this.capacity);
-        this.southWest = parent;
+        this.southWest.parent = this;
     }
 }
