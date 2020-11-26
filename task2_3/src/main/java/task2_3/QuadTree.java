@@ -3,28 +3,29 @@ package task2_3;
 import java.util.ArrayList;
 
 public class QuadTree {
-    public RectBoundary boundary; // Границы дерева
-    public int capacity; // Вместимость каждой секции
-    public QuadTree northWest;
-    public QuadTree northEast;
-    public QuadTree southWest;
-    public QuadTree southEast;
-    public boolean isDivided;
-    public ArrayList<Point> points;
+    private RectBoundary boundary; // Границы дерева
+    private int capacity; // Вместимость каждой секции
+    private QuadTree northWest;
+    private QuadTree northEast;
+    private QuadTree southWest;
+    private QuadTree southEast;
+    private boolean isDivided;
+    private ArrayList<Point> points;
 
     /**
      * Конструктор для создания дерева квадрантов
+     *
      * @param boundary - Стартовые границы дерева - самый большой блок
      * @param capacity - Максимальное колличество точек в одном квадрате.
-     *                   При привышении квадрат разделяется на 4 части
+     *                 При привышении квадрат разделяется на 4 части
      */
     public QuadTree(RectBoundary boundary, int capacity) {
         if (boundary == null) {
-            throw new IllegalStateException("boundary is null");
+            throw new IllegalArgumentException("boundary is null");
         }
 
         if (capacity < 1) {
-            throw new IllegalStateException("capacity must be greater than 0");
+            throw new IllegalArgumentException("capacity must be greater than 0");
         }
 
         this.boundary = boundary;
@@ -38,10 +39,35 @@ public class QuadTree {
     }
 
     /**
+     * @return границы текущего дерева квадрантов
+     */
+    public RectBoundary getBoundary() {
+        return this.boundary;
+    }
+
+    /**
+     * @return Поддеревья текущего дерева,
+     * пустой - если поддерева нет
+     */
+    public ArrayList<QuadTree> getSubtrees() {
+        if (!this.isDivided) {
+            return new ArrayList<>();
+        }
+
+        var result = new ArrayList<QuadTree>();
+        result.add(this.northEast);
+        result.add(this.northWest);
+        result.add(this.southEast);
+        result.add(this.southWest);
+
+        return result;
+    }
+
+    /**
      * Метод для вставки точки в дерево
+     *
      * @param point - Объект точка, с координатами X и Y
-     * @return
-     * false - если вставить не удалось
+     * @return false - если вставить не удалось
      * true - если вставка прошла успешно
      */
     public boolean insert(Point point) {
@@ -74,12 +100,13 @@ public class QuadTree {
 
     /**
      * Запрос на поиск точек в заданных границах
+     *
      * @param boundary - Границы, в которых ищем точки.
-     * @param found - Список под ответ. Отчистится, если не пустой.
+     * @param found    - Список под ответ.
      * @return Список точек, входящих в данную границу
      */
     public ArrayList<Point> query(RectBoundary boundary, ArrayList<Point> found) {
-        if (!found.isEmpty()){
+        if (!found.isEmpty()) {
             found = new ArrayList<>();
         }
 
@@ -88,15 +115,15 @@ public class QuadTree {
         }
 
         for (var point : this.points) {
-            if (boundary.contains(point)){
+            if (boundary.contains(point)) {
                 found.add(point);
             }
         }
 
-        if (this.isDivided){
+        if (this.isDivided) {
             this.northWest.query(boundary, found);
             this.northEast.query(boundary, found);
-            this.southWest.query(boundary,found);
+            this.southWest.query(boundary, found);
             this.southEast.query(boundary, found);
         }
 

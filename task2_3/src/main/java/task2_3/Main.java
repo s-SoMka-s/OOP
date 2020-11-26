@@ -6,16 +6,15 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class Main {
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         var boundary = new RectBoundary(200, 200, 200, 200);
         var qt = new QuadTree(boundary, 1);
 
         var rand = new Random(1000);
-        var maxW = boundary.halfWidth *2;
-        var maxH = boundary.halfHeight *2;
+        var maxW = boundary.halfWidth * 2;
+        var maxH = boundary.halfHeight * 2;
         for (int i = 0; i < 1550; i++) {
-            var point = new Point(rand.nextDouble()*maxW, rand.nextDouble()*maxH);
+            var point = new Point(rand.nextDouble() * maxW, rand.nextDouble() * maxH);
             qt.insert(point);
         }
 
@@ -28,44 +27,43 @@ public class Main {
 
 }
 
-class Board extends Panel{
+class Board extends Panel {
     private QuadTree quadTree;
 
-    public Board(QuadTree qt)
-    {
+    public Board(QuadTree qt) {
         this.quadTree = qt;
     }
 
     @Override
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         super.paint(g);
         drawQT(g, this.quadTree);
     }
 
-    private void drawQT(Graphics g, QuadTree qt)
-    {
-        if (qt == null){
+    private void drawQT(Graphics g, QuadTree qt) {
+        if (qt == null) {
             return;
         }
+
         var g2d = (Graphics2D) g;
         g2d.setPaint(Color.BLACK);
 
+        var boundary = qt.getBoundary();
 
-        var w = qt.boundary.halfWidth *2;
-        var h = qt.boundary.halfHeight *2;
-        var x = qt.boundary.centerX - w/2;
-        var y = qt.boundary.centerY - h/2;
+        var w = boundary.halfWidth * 2;
+        var h = boundary.halfHeight * 2;
+        var x = boundary.centerX - w / 2;
+        var y = boundary.centerY - h / 2;
 
-        var rect = new Rectangle2D.Double(x,y,w,h);
+        var rect = new Rectangle2D.Double(x, y, w, h);
         g2d.draw(rect);
 
-        if (qt.isDivided)
-        {
-            drawQT(g, qt.southWest);
-            drawQT(g, qt.southEast);
-            drawQT(g, qt.northEast);
-            drawQT(g, qt.northWest);
+        var subTrees = qt.getSubtrees();
+        if (subTrees.isEmpty()){
+            return;
+        }
+        for (var subtree : subTrees) {
+            drawQT(g, subtree);
         }
 
     }
