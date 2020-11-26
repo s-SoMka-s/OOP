@@ -236,7 +236,7 @@ public class MyPriorityQueue<KeyType extends Comparable<KeyType>, ValueType> {
          */
         @Override
         public int characteristics() {
-            return IMMUTABLE | SIZED;
+            return SIZED;
         }
     }
 
