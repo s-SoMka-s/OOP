@@ -23,4 +23,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ../../task1_1/gradlew build
+      run: ./$source-branch/gradlew build
