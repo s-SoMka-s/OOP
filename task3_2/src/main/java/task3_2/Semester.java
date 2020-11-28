@@ -38,6 +38,17 @@ public class Semester {
         return avgMarksSum / subjCount;
     }
 
+    public double getAverageSubjectMark(String name) {
+        var exists = subjects.stream().filter(s -> s.getName().equals(name)).findFirst();
+        if (exists.isEmpty()) {
+            return 0;
+        }
+
+        var res = exists.get().getAverage();
+
+        return res;
+    }
+
     public HashMap<String, Double> getTotals(){
         var res = new HashMap<String, Double>();
 
