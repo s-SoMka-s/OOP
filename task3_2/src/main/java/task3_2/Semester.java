@@ -37,4 +37,21 @@ public class Semester {
 
         return avgMarksSum / subjCount;
     }
+
+    public HashMap<String, Double> getTotals(){
+        var res = new HashMap<String, Double>();
+
+        subjects.forEach(s -> res.put(s.getName(), s.getTotalMark()));
+
+        return res;
+    }
+
+    public void setTotalMark(String subjectName, double newTotalMark){
+        for (var subject : subjects){
+            if (subject.getName().equals(subjectName)){
+                subject.setTotalMark(newTotalMark);
+                return;
+            }
+        }
+    }
 }

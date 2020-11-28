@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Subject {
     private String name;
-    private double totalMark;
+    private double totalMark = 0;
     private HashMap<String, Double> marks;
 
     public Subject(String name) {
