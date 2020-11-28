@@ -80,7 +80,7 @@ public class MyDate {
                 monthId = 1;
                 year++;
             }
-            daysInMonth = daysInMonth(Month.values()[monthId], isYearLeap(year));
+            daysInMonth = daysInMonth(Month.values()[monthId-1], isYearLeap(year));
         }
 
         return new MyDate(resDay, monthId, year);

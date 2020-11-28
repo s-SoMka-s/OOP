@@ -3,6 +3,10 @@ package task3_1;
 public class MyGregorianCalendar extends MyDate {
     private MyDate currentDate;
 
+    public MyGregorianCalendar(){
+        this.currentDate = new MyDate();
+    }
+
     public MyGregorianCalendar(String dateString) {
         if (dateString.isBlank()) {
             throw new IllegalArgumentException("Wrong date format");
