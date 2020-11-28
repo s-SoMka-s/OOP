@@ -1,14 +1,16 @@
 package task3_1;
 
-public class MyGregorianCalendar {
+public class MyGregorianCalendar extends MyDate {
     private MyDate currentDate;
 
-    public MyGregorianCalendar(String dateString){
-        if (dateString.isBlank()){
+    public MyGregorianCalendar(String dateString) {
+        if (dateString.isBlank()) {
             throw new IllegalArgumentException("Wrong date format");
         }
 
-        if (!this.tryParse(dateString)){
+        this.currentDate = new MyDate();
+
+        if (!this.tryParse(dateString)) {
             throw new IllegalArgumentException("Wrong date format");
         }
 
@@ -16,12 +18,8 @@ public class MyGregorianCalendar {
     }
 
     private boolean tryParse(String dateString) {
-        if (!dateString.matches("d{1,2}\\/d{1,2}\\/d{4}")){
-            return false;
-        }
-
         var splitted = dateString.split("\\/");
-        if(splitted.length != 3){
+        if (splitted.length != 3) {
             return false;
         }
 
@@ -34,24 +32,25 @@ public class MyGregorianCalendar {
 
     /**
      * Adds number of date unit to current date
+     *
      * @param number - count of date units
-     * @param unit - date unit
+     * @param unit   - date unit
      * @return MyDate object - result date
      */
-    public MyDate addUnits(int number, Units unit){
+    public MyDate addUnits(int number, DateUnit unit) {
         MyDate result;
-        switch (unit){
+        switch (unit) {
             case Day:
-                result = this.addDays(number);
+                result = addDays(this.currentDate, number);
                 break;
             case Week:
-                result = this.addWeeks(number);
+                result = addWeeks(this.currentDate, number);
                 break;
             case Month:
-                result = this.addMonths(number);
+                result = addMonths(this.currentDate, number);
                 break;
             case Year:
-                result = this.addYears(number);
+                result = addYears(this.currentDate, number);
                 break;
             default:
                 throw new IllegalArgumentException("Illegal date unit");
@@ -60,29 +59,40 @@ public class MyGregorianCalendar {
         return result;
     }
 
-    private MyDate addYears(int number) {
-        return null;
+    /**
+     * Subtract number of date unit to current date
+     *
+     * @param number - count of date units
+     * @param unit   - date unit
+     * @return MyDate object - result date
+     */
+    public MyDate subtractUnits(int number, DateUnit unit) {
+        MyDate result;
+        switch (unit) {
+            case Day:
+                result = this.subtractDays(this.currentDate, number);
+                break;
+            case Week:
+                result = this.subtractWeeks(this.currentDate, number);
+                break;
+            case Month:
+                result = this.subtractMonths(this.currentDate, number);
+                break;
+            case Year:
+                result = this.subtractYears(this.currentDate, number);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal date unit");
+        }
+
+        return result;
     }
 
-    private MyDate addWeeks(int number) {
-        return null;
-    }
-
-
-    private MyDate addDays(int number){
-        return null;
-    }
-
-    private MyDate addMonths(int number){
-        return null;
-    }
 
 
 
-    enum Units {
-        Day,
-        Week,
-        Month,
-        Year
-    }
+
+
+
+
 }
