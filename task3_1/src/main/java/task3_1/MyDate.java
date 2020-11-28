@@ -4,7 +4,7 @@ public class MyDate {
     public int day;
     public int month;
     public int year;
-    private int[] daysInMonth = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
     public MyDate(){
