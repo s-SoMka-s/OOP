@@ -72,4 +72,8 @@ public class MyNotebook {
         return res;
     }
 
+    public String getOwner(){
+        return owner;
+    }
+
 }
