@@ -15,11 +15,15 @@ public class MyNotebook {
     private ArrayList<Record> records;
 
     @SerializedName("Created-at")
-    private Date createdAt;
+    private final Date createdAt;
 
     @SerializedName("Updated-at")
     private Date updatedAt;
 
+    /**
+     * Конструктор класса Notebook
+     * @param owner - владелец записной книжки
+     */
     public MyNotebook(String owner) {
         this.owner = owner;
         records = new ArrayList<>();
@@ -27,16 +31,25 @@ public class MyNotebook {
         updatedAt = (Date) this.createdAt.clone();
     }
 
-
+    /**
+     * Метод позволяет добавить новую запиьс в книжку
+     * @param record - новая запись
+     * @throws IllegalStateException если такая запись уже существует
+     */
     public void addRecord(Record record) {
         if (records.contains(record)) {
             throw new IllegalStateException("This record is already exists!");
         }
 
         records.add(record);
-
+        this.updatedAt = new Date();
     }
 
+    /**
+     * Метод позволяет удалить запись по её заголовку
+     * @param title - заголовок записи
+     * @throws IllegalStateException если такой записи не существует
+     */
     public void removeRecord(String title) {
         var exists = records.stream().filter(r -> r.getTitle().equals(title)).findFirst().get();
         if (exists == null) {
@@ -44,8 +57,13 @@ public class MyNotebook {
         }
 
         records.remove(exists);
+        this.updatedAt = new Date();
     }
 
+    /**
+     * Метод позволяет получить все записи из книжки, отсортированные по дате добавления
+     * @return список всех записей
+     */
     public ArrayList<Record> getAllRecordsOrdered() {
         records.sort(new Comparator<Record>() {
             @Override
@@ -57,6 +75,14 @@ public class MyNotebook {
         return this.records;
     }
 
+    /**
+     * Метод позволяет получить все записи, отсортированные по дате добавления,
+     * между startDate и endDate, которые содержат ключевые слова
+     * @param startDate - начальная дата
+     * @param endDate - конечная дата
+     * @param keyWords - ключевые слова, по которым нужно искать
+     * @return
+     */
     public ArrayList<Record> getAllRecordsOrderedBetween(Date startDate, Date endDate, String[] keyWords) {
         var ordered = this.getAllRecordsOrdered();
         var orderedBetween = ordered.stream()
@@ -72,6 +98,9 @@ public class MyNotebook {
         return res;
     }
 
+    /**
+     * @return владелец записной книжки
+     */
     public String getOwner(){
         return owner;
     }
