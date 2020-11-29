@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 public class Application {
     private Scanner scanner;
     private MyNotebook notebook;
+    private String lastPathstr;
 
     public Application() throws ParseException {
         this.scanner = new Scanner(System.in);
@@ -32,8 +33,8 @@ public class Application {
             this.notebook = new MyNotebook(owner);
         } else {
             System.out.println("Choose json file that represents you notebook.");
-            var pathStr = this.scanner.nextLine();
-            var path = Path.of(pathStr);
+            this.lastPathstr = this.scanner.nextLine();
+            var path = Path.of(this.lastPathstr);
 
             try {
                 this.notebook = this.deserializer(path);
@@ -50,6 +51,11 @@ public class Application {
             System.out.println("Write what you want to do with you notebook");
             var command = scanner.nextLine().split(" ");
             if (command[1].equals("-exit")) {
+                try {
+                    this.serializer(this.notebook, this.lastPathstr);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("Goodbye, " + this.notebook.getOwner());
                 return;
             }
@@ -72,8 +78,24 @@ public class Application {
                 return;
             case "-show":
                 this.showHandler(args);
+                return;
+            case "-serialize":
+                this.serializeHandler(args);
+                return;
             default:
                 return;
+        }
+    }
+
+    private void serializeHandler(String[] args) {
+        if (args.length != 3) {
+            throw new IllegalArgumentException("To few args!");
+        }
+
+        try {
+            this.serializer(this.notebook, args[2]);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -81,8 +103,13 @@ public class Application {
         if (args.length == 2) {
             var records = this.notebook.getAllRecordsOrdered();
             this.printRecords(records);
+            return;
         }
 
+        this.showOrderedBetweenHandler(args);
+    }
+
+    private void showOrderedBetweenHandler(String[] args) throws ParseException {
         var formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.ENGLISH);
 
         var start = formatter.parse(args[2]);
@@ -101,21 +128,22 @@ public class Application {
     }
 
     private void printRecords(ArrayList<Record> records) {
-        if (records.isEmpty()){
+        if (records.isEmpty()) {
             System.out.println("You don't have any records yet!");
         }
 
         var sb = new StringBuilder();
         for (var record : records) {
-            sb = sb.append(record.getTitle()).append("\n")
-                    .append(record.getContent()).append("\n")
-                    .append(record.getCreatedAtDate());
+            sb = sb.append("CreatedAt: ").append(record.getCreatedAtDate())
+                    .append("Title: ").append(record.getTitle()).append("\n")
+                    .append("Content: ").append(record.getContent()).append("\n");
         }
 
         System.out.println(sb);
     }
 
     private void serializer(MyNotebook source, String dstPath) throws IOException {
+        this.lastPathstr = dstPath;
         var gson = new GsonBuilder().setPrettyPrinting().create();
         var jsonStr = gson.toJson(source);
 
@@ -127,6 +155,7 @@ public class Application {
 
         var fw = new FileWriter(file);
         fw.write(jsonStr);
+        fw.close();
     }
 
     private MyNotebook deserializer(Path path) throws IOException {
