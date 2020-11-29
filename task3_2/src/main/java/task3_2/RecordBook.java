@@ -4,12 +4,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class RecordBook {
     private String name;
     private String surname;
     private String patronymic;
+    private int currSemester;
+    private int currCourse;
     private ArrayList<Semester> semesters;
 
     /**
@@ -23,6 +24,9 @@ public class RecordBook {
         }
 
         var splited = FIO.trim().split(" ");
+
+        this.currSemester = 1;
+        this.currCourse = 1;
         this.name = splited[0];
         this.surname = splited[1];
         this.patronymic = splited.length == 3 ? splited[2] : null;
@@ -109,12 +113,13 @@ public class RecordBook {
 
     /**
      * Метод позволяет добавить оценок в семестр по конкретному предмету
-     * @param semesterId - номер семестра с 1
+     *
+     * @param semesterId  - номер семестра с 1
      * @param subjectName - название предмета
-     * @param marks - хэш таблица с оценками <Название работы, Оценка>
+     * @param marks       - хэш таблица с оценками <Название работы, Оценка>
      * @throws IllegalStateException - если такого семестра не существует
      */
-    public void addMarks(int semesterId, String subjectName, HashMap<String, Double> marks){
+    public void addMarks(int semesterId, String subjectName, HashMap<String, Double> marks) {
         semesterId--;
 
         var semester = this.semesters.get(semesterId);
@@ -123,6 +128,26 @@ public class RecordBook {
         }
 
         semester.addMarks(subjectName, marks);
+    }
+
+    /**
+     * Метод позволяет получить Информацию о владельце зачетной книжки
+     *
+     * @return string - инфо о владельце книжки
+     */
+    public String getOwner() {
+        var sb = new StringBuilder()
+                .append("Surname: ").append(this.surname).append("\n")
+                .append("Name: ").append(this.name).append("\n");
+
+        if (!this.patronymic.isBlank()) {
+            sb = sb.append("Patronymic: ").append(this.patronymic).append("\n");
+        }
+
+        sb = sb.append("Current course: ").append(this.currCourse).append("\n")
+               .append("Current semester: ").append(this.currSemester).append("\n");
+
+        return sb.toString();
     }
 
     private void addSemesters() {
