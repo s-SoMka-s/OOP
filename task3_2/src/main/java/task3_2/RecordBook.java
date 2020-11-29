@@ -145,9 +145,34 @@ public class RecordBook {
         }
 
         sb = sb.append("Current course: ").append(this.currCourse).append("\n")
-               .append("Current semester: ").append(this.currSemester).append("\n");
+                .append("Current semester: ").append(this.currSemester).append("\n");
 
         return sb.toString();
+    }
+
+    /**
+     * Метод позволяет перевести пользователя на новый семестр
+     * Проверяет, выставлены ли все итогывые за семестр
+     */
+    public void nextSemester() {
+        if (this.currCourse == 4 && this.currSemester == 2) {
+            throw new IllegalStateException("You in the last course in university!");
+        }
+
+        var semester = this.semesters.get((this.currCourse - 1) * 2 + this.currSemester - 1);
+        var totalsEnough = !semester.getTotals().values().contains(0);
+        if (!totalsEnough){
+            throw new IllegalStateException("Not all final marks are recorded");
+        }
+
+        var curr = this.currSemester;
+        if (curr == 2) {
+            this.currCourse++;
+            this.currSemester = 1;
+            return;
+        }
+
+        this.currSemester++;
     }
 
     private void addSemesters() {

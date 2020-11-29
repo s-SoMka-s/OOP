@@ -10,6 +10,5 @@ class RecordBookTest {
         var rb = new RecordBook("Chiesov Igor Andreevich");
 
         System.out.println(rb.getOwner());
-        System.out.println(1);
     }
 }
