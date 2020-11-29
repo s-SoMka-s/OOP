@@ -39,6 +39,24 @@ public class Semester {
         subjects.add(new Subject(name, marks));
     }
 
+    /**
+     * Метод позволяет добавить новый предмет в семестр
+     * @param newSubject - предмет
+     * @throws IllegalStateException - если такой предмет уже существует.
+     * @throws IllegalArgumentException - если предмет - null
+     */
+    public void addSubject(Subject newSubject) {
+        if (subjects.stream().anyMatch(s->s.getName().equals(newSubject.getName()))){
+            throw new IllegalStateException("Such subject is already exists!");
+        }
+
+        if (newSubject == null){
+            throw new IllegalArgumentException("Subject can't be bull!");
+        }
+
+        this.subjects.add(newSubject);
+    }
+
     public double getAverageMark() {
         if (subjects.isEmpty()) {
             return 0;

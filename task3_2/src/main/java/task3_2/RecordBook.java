@@ -30,7 +30,7 @@ public class RecordBook {
         this.name = splited[0];
         this.surname = splited[1];
         this.patronymic = splited.length == 3 ? splited[2] : null;
-        this.semesters = new ArrayList<>();
+        this.addSemesters();
     }
 
 
@@ -151,6 +151,29 @@ public class RecordBook {
     }
 
     /**
+     * Метод позволяет добавить предмет в конкретный семестр
+     * @param semesterId - номер семестра с 1
+     * @param subject - объект класса Subject, не может быть null
+     */
+    public void addSubject(int semesterId, Subject subject){
+        semesterId--;
+
+        this.semesters.get(semesterId).addSubject(subject);
+    }
+
+    /**
+     * Метод позволяет добавить предмет в конкретный семестр
+     * @param semesterId - номер семестра
+     * @param subjectName - название предмета
+     * @param marks - оценки, может быть null
+     */
+    public void addSubject(int semesterId, String subjectName, @Nullable HashMap<String, Double> marks){
+        semesterId--;
+
+        this.semesters.get(semesterId).addSubject(subjectName, marks);
+    }
+
+    /**
      * Метод позволяет перевести пользователя на новый семестр
      * Проверяет, выставлены ли все итогывые за семестр
      */
@@ -160,7 +183,7 @@ public class RecordBook {
         }
 
         var semester = this.semesters.get((this.currCourse - 1) * 2 + this.currSemester - 1);
-        var totalsEnough = !semester.getTotals().values().contains(0);
+        var totalsEnough = !semester.getTotals().values().contains(0.0);
         if (!totalsEnough){
             throw new IllegalStateException("Not all final marks are recorded");
         }
@@ -176,6 +199,8 @@ public class RecordBook {
     }
 
     private void addSemesters() {
+        this.semesters = new ArrayList<>();
+
         for (int i = 0; i < 8; i++) {
             var semester = new Semester(i + 1);
             this.semesters.add(semester);

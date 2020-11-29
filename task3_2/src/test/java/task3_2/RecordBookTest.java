@@ -10,5 +10,7 @@ class RecordBookTest {
         var rb = new RecordBook("Chiesov Igor Andreevich");
 
         System.out.println(rb.getOwner());
+        rb.addSubject(1, new Subject("Math"));
+        rb.nextSemester();
     }
 }
