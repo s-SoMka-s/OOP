@@ -1,8 +1,11 @@
 package task4_1;
 
-public class Main {
+import java.util.Scanner;
 
+public class Main {
     public static void main(String[] args){
-        var mc = new MyCalculator();
+        var sc = new Scanner(System.in);
+        var exprInf = sc.nextLine();
+        var mc = new MyCalculator(exprInf);
     }
 }

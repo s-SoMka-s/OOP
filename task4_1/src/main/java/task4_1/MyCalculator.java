@@ -5,13 +5,15 @@ import java.util.*;
 public class MyCalculator {
     private final String[] operations = {"+", "-", "/", "*"};
     private final String[] functions = {"sin", "cos", "log", "pow", "sqrt"};
-
     private Stack<Double> numbers;
 
-
-    public MyCalculator() {
+    /**
+     * Конструктор класса MyCalculator
+     * @param exprInf - выражение в инфиксной записи. Токены разделены пробелами
+     */
+    public MyCalculator(String exprInf) {
         this.numbers = new Stack<>();
-        this.Calculate("sin + - 1 2 1");
+        this.Calculate(exprInf);
     }
 
     private double Calculate(String exprInf) {
