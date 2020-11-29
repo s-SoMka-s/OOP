@@ -9,14 +9,24 @@ public class Semester {
     private int Id;
     private ArrayList<Subject> subjects;
 
+    /**
+     * Конструктор класса Semester.
+     * @param id - номер семестра. Начинается с 1
+     */
     public Semester(int id) {
         this.Id = id;
         this.subjects = new ArrayList<>();
     }
 
+    /**
+     * Метод позволяет добавить новый предмет в семестр
+     * @param name - название предмета
+     * @param marks - хэш таблица с оценками. Может быть null.
+     * @throws IllegalStateException - если такой предмет уже существует.
+     */
     public void addSubject(String name, @Nullable HashMap<String, Double> marks) {
         if (subjects.stream().filter(s -> s.getName().equals(name)).count() != 0) {
-            return;
+            throw new IllegalStateException("Such subject is already exists!");
         }
 
         if (marks == null) {
@@ -41,7 +51,7 @@ public class Semester {
     public double getAverageSubjectMark(String name) {
         var exists = subjects.stream().filter(s -> s.getName().equals(name)).findFirst();
         if (exists.isEmpty()) {
-            return 0;
+            throw new IllegalStateException("Such subject doesn't exist!");
         }
 
         var res = exists.get().getAverage();

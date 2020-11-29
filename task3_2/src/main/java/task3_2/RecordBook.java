@@ -20,16 +20,16 @@ public class RecordBook {
     }
 
     /**
-     * Вернет средний балл по введенному предмету,
-     * учитывает, что предмет может идти больше одного семестра
+     * Вернет средний балл по введенному предмету за всё время обучения.
+     * Учитывает, что предмет может идти больше одного семестра
      *
      * @param subjectName - название предмета, по которому нужен средний балл
      * @return средний балл по введенному предмету за все время обучения
      */
-    public Double getAvgSubjectMark(String subjectName) {
+    public Double getAverageMark(String subjectName) {
         var count = 0d;
         var res = 0d;
-        for (var semester : semesters) {
+        for (var semester : this.semesters) {
             var avgSubjMark = semester.getAverageSubjectMark(subjectName);
             if (avgSubjMark != 0d) {
                 count++;
@@ -43,6 +43,24 @@ public class RecordBook {
 
         return res / count;
     }
+
+    /**
+     * Метод позволяет получить средний балл по конкретному предмету за конкретный семестр
+     * @param subjectName - название предмета
+     * @param semesterId - номер семестра. Начиная с 1
+     * @return средний балл по введенному предмету за введенный семестр
+     */
+    public Double getAverageMark(String subjectName, int semesterId) {
+        var semester = this.semesters.get(semesterId);
+        if (semester == null){
+            throw new IllegalStateException("Such semester doesn't exist!");
+        }
+
+        var res = semester.getAverageSubjectMark(subjectName);
+
+        return res;
+    }
+
 
     /**
      * Вычисляет размер стипендии в текущем семестре на основе предыдущего
