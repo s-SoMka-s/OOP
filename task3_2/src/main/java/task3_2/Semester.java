@@ -11,6 +11,7 @@ public class Semester {
 
     /**
      * Конструктор класса Semester.
+     *
      * @param id - номер семестра. Начинается с 1
      */
     public Semester(int id) {
@@ -20,7 +21,8 @@ public class Semester {
 
     /**
      * Метод позволяет добавить новый предмет в семестр
-     * @param name - название предмета
+     *
+     * @param name  - название предмета
      * @param marks - хэш таблица с оценками. Может быть null.
      * @throws IllegalStateException - если такой предмет уже существует.
      */
@@ -48,6 +50,12 @@ public class Semester {
         return avgMarksSum / subjCount;
     }
 
+    /**
+     * Метод позволяет получить средний балл по введенному предмету за текущий семестр
+     *
+     * @param name
+     * @return
+     */
     public double getAverageSubjectMark(String name) {
         var exists = subjects.stream().filter(s -> s.getName().equals(name)).findFirst();
         if (exists.isEmpty()) {
@@ -59,7 +67,12 @@ public class Semester {
         return res;
     }
 
-    public HashMap<String, Double> getTotals(){
+    /**
+     * Метод позволяет получить все итоговые оценки по предметам за текущий семестр
+     *
+     * @return - хэш таблица <название предмета, оценка>
+     */
+    public HashMap<String, Double> getTotals() {
         var res = new HashMap<String, Double>();
 
         subjects.forEach(s -> res.put(s.getName(), s.getTotalMark()));
@@ -67,12 +80,43 @@ public class Semester {
         return res;
     }
 
-    public void setTotalMark(String subjectName, double newTotalMark){
-        for (var subject : subjects){
-            if (subject.getName().equals(subjectName)){
+    /**
+     * Метод позволяет выставить итоговую оценку за предмет в текущем семестре
+     *
+     * @param subjectName  - название предмета
+     * @param newTotalMark - итогова оценка за предмет
+     * @throws IllegalStateException - если такого предмета нет в текущем семестре
+     */
+    public void setTotalMark(String subjectName, double newTotalMark) {
+        for (var subject : subjects) {
+            if (subject.getName().equals(subjectName)) {
                 subject.setTotalMark(newTotalMark);
                 return;
             }
+        }
+
+        throw new IllegalStateException("Such subject doesn't exist!");
+    }
+
+    /**
+     * Метод позволяет добавить оценки по текущему предмету
+     * @param subjectName - название предмета
+     * @param marks - хэш таблица с оценками, не может быть пустой
+     * @throws IllegalStateException - если такого предмета нет
+     * @throws IllegalArgumentException - если оценки пусты
+     */
+    public void addMarks(String subjectName, HashMap<String, Double> marks) {
+        if (marks.isEmpty()){
+            throw new IllegalArgumentException("Marks can't be empty!");
+        }
+
+        var subject = this.subjects.stream().filter(s -> s.getName().equals(subjectName)).findFirst().get();
+        if (subject == null){
+            throw new IllegalStateException("Such subject doesn't exists!");
+        }
+
+        for (var mark : marks.entrySet()) {
+            subject.addMark(mark.getKey(), mark.getValue());
         }
     }
 }

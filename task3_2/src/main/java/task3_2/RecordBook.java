@@ -1,6 +1,10 @@
 package task3_2;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class RecordBook {
     private String name;
@@ -8,6 +12,11 @@ public class RecordBook {
     private String patronymic;
     private ArrayList<Semester> semesters;
 
+    /**
+     * Конструктор класса RecordBook
+     *
+     * @param FIO - ФИО студента, разделенное пробелами, может быть без отчества
+     */
     public RecordBook(String FIO) {
         if (FIO.isBlank()) {
             throw new IllegalArgumentException("Incorrect input");
@@ -17,7 +26,9 @@ public class RecordBook {
         this.name = splited[0];
         this.surname = splited[1];
         this.patronymic = splited.length == 3 ? splited[2] : null;
+        this.semesters = new ArrayList<>();
     }
+
 
     /**
      * Вернет средний балл по введенному предмету за всё время обучения.
@@ -46,13 +57,16 @@ public class RecordBook {
 
     /**
      * Метод позволяет получить средний балл по конкретному предмету за конкретный семестр
+     *
      * @param subjectName - название предмета
-     * @param semesterId - номер семестра. Начиная с 1
+     * @param semesterId  - номер семестра. Начиная с 1
      * @return средний балл по введенному предмету за введенный семестр
      */
     public Double getAverageMark(String subjectName, int semesterId) {
+        semesterId--;
+
         var semester = this.semesters.get(semesterId);
-        if (semester == null){
+        if (semester == null) {
             throw new IllegalStateException("Such semester doesn't exist!");
         }
 
@@ -73,6 +87,7 @@ public class RecordBook {
             return Scholarship.NOTHING;
         }
 
+        semesterId--;
         var prvSemesterMarks = semesters.get(semesterId).getTotals().values();
 
         for (var mark : prvSemesterMarks) {
@@ -90,5 +105,30 @@ public class RecordBook {
         }
 
         return Scholarship.HIGH;
+    }
+
+    /**
+     * Метод позволяет добавить оценок в семестр по конкретному предмету
+     * @param semesterId - номер семестра с 1
+     * @param subjectName - название предмета
+     * @param marks - хэш таблица с оценками <Название работы, Оценка>
+     * @throws IllegalStateException - если такого семестра не существует
+     */
+    public void addMarks(int semesterId, String subjectName, HashMap<String, Double> marks){
+        semesterId--;
+
+        var semester = this.semesters.get(semesterId);
+        if (semester == null) {
+            throw new IllegalStateException("Such semester doesn't exist!");
+        }
+
+        semester.addMarks(subjectName, marks);
+    }
+
+    private void addSemesters() {
+        for (int i = 0; i < 8; i++) {
+            var semester = new Semester(i + 1);
+            this.semesters.add(semester);
+        }
     }
 }
