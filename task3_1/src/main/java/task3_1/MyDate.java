@@ -7,24 +7,45 @@ public class MyDate {
     private int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
+    /**
+     * Конструктор класса MyDate
+     * Сохраняет текущую дату как 1 января 1970 года
+     */
     public MyDate(){
         this.day = 1;
         this.month = 1;
         this.year = 1970;
     }
 
+    /**
+     * Конструктор класса MyDate
+     * @param day - день
+     * @param month - номер месяця
+     * @param year - год
+     */
     public MyDate(int day, int month, int year){
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
+    /**
+     * Конструктор класса MyDate.
+     * Запомнит переданную дату
+     * @param newDate - объект MyDate.
+     */
     public MyDate(MyDate newDate){
         this.day = newDate.day;
         this.month = newDate.month;
         this.year = newDate.year;
     }
 
+    /**
+     * Вычисляет количество дней в месяце, учитавает високосность года
+     * @param month - месяц
+     * @param isYearLeap - високосный ли год
+     * @return количество дней в месяце
+     */
     protected int daysInMonth(Month month, boolean isYearLeap){
         var monthId = month.ordinal();
         var result = daysInMonth[monthId];
@@ -36,10 +57,22 @@ public class MyDate {
         return result;
     }
 
+    /**
+     * Добавляет сколько-то лет к текущей дате
+     * @param date - к какой дате добавить
+     * @param numberOfYears - сколько лет добавить
+     * @return полученная дата
+     */
     protected MyDate addYears(MyDate date, int numberOfYears) {
         return new MyDate(date.day, date.month, date.year + numberOfYears);
     }
 
+    /**
+     * Вычитает сколько-то лет из текущей даты
+     * @param date - из какой даты вычесть
+     * @param numberOfYears - сколько лет вычесть
+     * @return полученная дата
+     */
     protected MyDate subtractYears(MyDate date, int numberOfYears){
         return new MyDate(date.day, date.month, date.year - numberOfYears);
     }
@@ -64,6 +97,12 @@ public class MyDate {
         return null;
     }
 
+    /**
+     * Добавляет сколько-то дней к текущей дате
+     * @param date - к какой дате прибавить
+     * @param numberOfDays - сколько дней прибавить
+     * @return полученная дата
+     */
     protected MyDate addDays(MyDate date, int numberOfDays) {
         var resDay = date.day ;
         var monthId = date.month;
@@ -86,6 +125,12 @@ public class MyDate {
         return new MyDate(resDay, monthId, year);
     }
 
+    /**
+     * Вычитает сколько-то дней из текущей даты
+     * @param date - из какой даты вычесть
+     * @param numberOfDays - сколько дней вычесть
+     * @return полученная дата
+     */
     protected MyDate subtractDays(MyDate date, int numberOfDays){
         int resDay = date.day - numberOfDays;
         int monthId = date.month;
@@ -107,6 +152,12 @@ public class MyDate {
         return new MyDate(resDay, monthId, year);
     }
 
+    /**
+     * Проверяет, является ли год високосным
+     * @param year - год
+     * @return true - если год високосный,
+     *         false - иначе
+     */
     protected boolean isYearLeap(int year) {
         if ((year % 4 == 0) && (year % 100 != 0) || year % 400 == 0) {
             return true;
@@ -115,6 +166,10 @@ public class MyDate {
         return false;
     }
 
+    /**
+     * Метод для форматированного вывода даты
+     * @return дату в строковом представлении
+     */
     @Override
     public String toString(){
         return String.format(this.day + "/" + this.month + "/" + this.year);

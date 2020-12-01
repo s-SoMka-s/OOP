@@ -3,10 +3,19 @@ package task3_1;
 public class MyGregorianCalendar extends MyDate {
     private MyDate currentDate;
 
+    /**
+     * Конструктор класса,
+     * выставляет текущей датой 1 января 1970 года
+     */
     public MyGregorianCalendar(){
         this.currentDate = new MyDate();
     }
 
+    /**
+     * Конструктор класса
+     * Пытается распарсить строку представляющую дату
+     * @param dateString - дата в строковом представлении в формате ddMMyyyy
+     */
     public MyGregorianCalendar(String dateString) {
         if (dateString.isBlank()) {
             throw new IllegalArgumentException("Wrong date format");
@@ -92,6 +101,12 @@ public class MyGregorianCalendar extends MyDate {
         return result;
     }
 
+    /**
+     * Вычисляет, какой день недели призодится на конкретную дату
+     * С помощью алгоритма Tomohiko Sakamoto
+     * @param date
+     * @return день недели
+     */
     public Day getDayOfTheWeek(MyDate date){
         int day = date.day;
         int month = date.month;
