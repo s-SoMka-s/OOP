@@ -105,7 +105,7 @@ public class MyDate {
      */
     protected MyDate addDays(MyDate date, int numberOfDays) {
         var resDay = date.day ;
-        var monthId = date.month;
+        var monthId = date.month - 1;
         var year = date.year;
         resDay += numberOfDays;
 
@@ -115,14 +115,14 @@ public class MyDate {
             resDay -= daysInMonth;
             monthId++;
 
-            if (monthId > 12){
-                monthId = 1;
+            if (monthId > 11){
+                monthId = 0;
                 year++;
             }
-            daysInMonth = daysInMonth(Month.values()[monthId-1], isYearLeap(year));
+            daysInMonth = daysInMonth(Month.values()[monthId], isYearLeap(year));
         }
 
-        return new MyDate(resDay, monthId, year);
+        return new MyDate(resDay, monthId + 1, year);
     }
 
     /**

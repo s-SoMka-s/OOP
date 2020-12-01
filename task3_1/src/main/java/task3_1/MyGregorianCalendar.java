@@ -21,7 +21,7 @@ public class MyGregorianCalendar extends MyDate {
             throw new IllegalArgumentException("Wrong date format");
         }
 
-        this.currentDate = new MyDate();
+
 
         if (!this.tryParse(dateString)) {
             throw new IllegalArgumentException("Wrong date format");
@@ -36,9 +36,11 @@ public class MyGregorianCalendar extends MyDate {
             return false;
         }
 
-        this.currentDate.day = Integer.parseInt(splitted[0]);
-        this.currentDate.month = Integer.parseInt(splitted[1]);
-        this.currentDate.year = Integer.parseInt(splitted[2]);
+        var day = Integer.parseInt(splitted[0]);
+        var month = Integer.parseInt(splitted[1]);
+        var year = Integer.parseInt(splitted[2]);
+
+        this.currentDate = new MyDate(day,month, year);
 
         return true;
     }

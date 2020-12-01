@@ -10,8 +10,12 @@ class MyGregorianCalendarTest {
     public void HowManyDaysTest(){
         var curDateCalendar = new MyGregorianCalendar("29/11/2020");
 
-        var res = curDateCalendar.getDayOfTheWeek(curDateCalendar.addUnits(1024, DateUnit.Day));
-        var expected = LocalDate.parse("2020-11-28").plusDays(1024).getDayOfWeek();
+        var added = curDateCalendar.addUnits(1024, DateUnit.Day);
+
+        var res = curDateCalendar.getDayOfTheWeek(added);
+        var parsed = LocalDate.parse("2020-11-29");
+        var expAdded = parsed.plusDays(1024);
+        var expected = expAdded.getDayOfWeek();
 
         assertEquals(res.ordinal(), expected.ordinal());
     }
