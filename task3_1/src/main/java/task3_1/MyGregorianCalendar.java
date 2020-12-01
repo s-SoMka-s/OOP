@@ -21,28 +21,25 @@ public class MyGregorianCalendar extends MyDate {
             throw new IllegalArgumentException("Wrong date format");
         }
 
-
-
-        if (!this.tryParse(dateString)) {
+        var parsed = this.tryParse(dateString);
+        if (parsed == null) {
             throw new IllegalArgumentException("Wrong date format");
         }
 
-
+        this.currentDate = parsed;
     }
 
-    private boolean tryParse(String dateString) {
+    private MyDate tryParse(String dateString) {
         var splitted = dateString.split("\\/");
         if (splitted.length != 3) {
-            return false;
+            return null;
         }
 
         var day = Integer.parseInt(splitted[0]);
         var month = Integer.parseInt(splitted[1]);
         var year = Integer.parseInt(splitted[2]);
 
-        this.currentDate = new MyDate(day,month, year);
-
-        return true;
+        return new MyDate(day,month, year);
     }
 
     /**
