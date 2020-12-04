@@ -19,7 +19,7 @@ public class RecordBook {
      * @param FIO - ФИО студента, разделенное пробелами, может быть без отчества
      */
     public RecordBook(String FIO) {
-        if (FIO.isBlank()) {
+        if (FIO.isBlank() || FIO == null) {
             throw new IllegalArgumentException("Incorrect input");
         }
 
@@ -40,8 +40,9 @@ public class RecordBook {
      *
      * @param subjectName - название предмета, по которому нужен средний балл
      * @return средний балл по введенному предмету за все время обучения
+     * @throws IllegalStateException если оценок у студента еще не было
      */
-    public Double getAverageMark(String subjectName) {
+    public double getAverageMark(String subjectName) {
         var count = 0d;
         var res = 0d;
         for (var semester : this.semesters) {
@@ -53,7 +54,7 @@ public class RecordBook {
         }
 
         if (count == 0) {
-            return 0d;
+            throw new IllegalStateException("Student has no marks!");
         }
 
         return res / count;
