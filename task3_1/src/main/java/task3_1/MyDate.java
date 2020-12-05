@@ -77,14 +77,52 @@ public class MyDate {
         return new MyDate(date.day, date.month, date.year - numberOfYears);
     }
 
-    // TO-DO Implement
+    /**
+     * Добавляет сколько-то месяцев к текущей дате
+     * @param date - к какой дате добавить
+     * @param numberOfMonth - сколько месяцев добавить
+     * @return полученная дата
+     */
     protected MyDate addMonths(MyDate date, int numberOfMonth){
-        return null;
+        var month = date.month;
+        var year = date.year;
+
+        var yearsDiff = numberOfMonth / 12;
+        numberOfMonth %= 12;
+
+        month += numberOfMonth;
+        year += yearsDiff;
+
+        if (month > 12){
+            month = month - 12;
+            year++;
+        }
+
+        return new MyDate(date.day, month, year);
     }
 
-    // TO-DO Implement
+    /**
+     * Вычитает сколько-то месяцев из текущей даты
+     * @param date - из какой даты вычесть
+     * @param numberOfMonth - сколько месяцев вычесть
+     * @return полученная дата
+     */
     protected MyDate subtractMonths(MyDate date, int numberOfMonth){
-        return null;
+        var month = date.month;
+        var year = date.year;
+
+        var yearsDiff = numberOfMonth / 12;
+        numberOfMonth %= 12;
+
+        month -= numberOfMonth;
+        year -= yearsDiff;
+
+        if (month < 1){
+            month = month + 12;
+            year--;
+        }
+
+        return new MyDate(date.day, month, year);
     }
 
     // TO-DO Implement

@@ -30,4 +30,15 @@ class MyGregorianCalendarTest {
         assertEquals(res, expected);
 
     }
+
+    @Test
+    public void AddMonthTest() {
+        var myDate = new MyDate(5, 12, 2020);
+
+        var parsed = LocalDate.parse("2020-12-05");
+        var expAdded = parsed.minusMonths(26);
+        System.out.println(expAdded);
+        var res = myDate.subtractMonths(myDate, 26);
+        System.out.println(res);
+    }
 }
