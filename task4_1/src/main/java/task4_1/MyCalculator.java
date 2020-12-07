@@ -1,18 +1,31 @@
 package task4_1;
 
+
+import task4_1.Implementations.Applier;
+import task4_1.Interfaces.IApplier;
+import task4_1.Interfaces.IDefiner;
+
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class MyCalculator {
-    private final String[] operations = {"+", "-", "/", "*"};
-    private final String[] functions = {"sin", "cos", "log", "pow", "sqrt"};
+public class MyCalculator{
     private Stack<Double> numbers;
+    private IDefiner definer;
+    private IApplier applier;
 
     /**
      * Конструктор класса MyCalculator
      * @param exprInf - выражение в инфиксной записи. Токены разделены пробелами
+     * @param definerClassPath - полный путь до класса реализующего парсер токена
+     * @param applierClassPass - полный путь до класса реализующего применение математических функций
      */
-    public MyCalculator(String exprInf) {
+    public MyCalculator(String exprInf, String definerClassPath, String applierClassPass) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         this.numbers = new Stack<>();
+
+        this.definer = (IDefiner) Class.forName(definerClassPath).getDeclaredConstructor().newInstance();
+        this.applier = (IApplier) Class.forName(applierClassPass).getDeclaredConstructor().newInstance();
+
         this.Calculate(exprInf);
     }
 
@@ -21,15 +34,22 @@ public class MyCalculator {
 
         while (tokenizer.hasMoreTokens()) {
             var token = tokenizer.nextToken().trim();
-            if (isFunction(token)) {
-                applyFunction(token);
+
+            var res = 0d;
+
+            var operation = this.definer.defineBinaryOperation(token);
+            if (operation != null){
+                var arg1 = this.numbers.pop();
+                var arg2 = this.numbers.pop();
+                res = this.applier.applyOperation(operation, arg1, arg2);
             }
-            else if (isOperation(token)) {
-               applyOperation(token);
+            else{
+                var arg = this.numbers.pop();
+                var function = this.definer.defineFunction(token);
+                res = this.applier.applyFunction(function, arg);
             }
-            else if (isNumber(token)) {
-                this.numbers.push(Double.parseDouble(token));
-            }
+
+            this.numbers.push(res);
         }
 
         var res = this.numbers.pop();
@@ -46,54 +66,6 @@ public class MyCalculator {
         return new StringTokenizer(reversedString);
     }
 
-    private void applyOperation(String token){
-        var op1 = this.numbers.pop();
-        var op2 = this.numbers.pop();
-
-        var res = 0d;
-
-        switch (token){
-            case "+":
-                res = op1 + op2;
-                break;
-            case "-":
-                res = op1 - op2;
-                break;
-            case "*":
-                res = op1 * op2;
-                break;
-            case "/":
-                res = op1 / op2;
-                break;
-            default:
-                break;
-        }
-
-        this.numbers.push(res);
-    }
-
-    private void applyFunction(String token) {
-        var res = this.numbers.pop();
-        switch (token) {
-            case "sin":
-                res = Math.sin(res);
-                break;
-            case "cos":
-                res = Math.cos(res);
-                break;
-            case "log":
-                res = Math.log(res);
-                break;
-            case "sqrt":
-                res = Math.sqrt(res);
-                break;
-            default:
-                break;
-        }
-
-        this.numbers.push(res);
-    }
-
     private boolean isNumber(String token) {
         try {
             Double.parseDouble(token);
@@ -104,25 +76,7 @@ public class MyCalculator {
         return true;
     }
 
-    private boolean isOperation(String token) {
-        for (var operation : this.operations) {
-            if (operation.equals(token)) {
-                return true;
-            }
-        }
 
-        return false;
-    }
-
-    private boolean isFunction(String token) {
-        for (var function : this.functions) {
-            if (function.equals(token)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private boolean isLeftBracket(String token) {
         return token.equals("(");
