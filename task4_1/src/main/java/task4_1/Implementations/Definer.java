@@ -22,7 +22,7 @@ public class Definer implements IDefiner {
             case "sin" -> Function.Sin;
             case "cos" -> Function.Cos;
             case "log" -> Function.Log;
-            case "sqrt" -> Function.Log;
+            case "sqrt" -> Function.Sqrt;
             default -> null;
         };
     }

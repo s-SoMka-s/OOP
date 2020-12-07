@@ -76,13 +76,4 @@ public class MyCalculator{
         return true;
     }
 
-
-
-    private boolean isLeftBracket(String token) {
-        return token.equals("(");
-    }
-
-    private boolean isRightBracket(String token) {
-        return token.equals(")");
-    }
 }

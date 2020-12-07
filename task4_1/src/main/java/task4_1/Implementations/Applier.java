@@ -7,11 +7,7 @@ import task4_1.Interfaces.Models.BinaryOperation;
 
 public class Applier implements IApplier {
     @Override
-    public double applyOperation(BinaryOperation binaryOperation, double arg1, @Nullable Double arg2) {
-        if (arg2 == null && binaryOperation != BinaryOperation.Subtraction){
-            throw new IllegalArgumentException("Only subtraction can have 1 argument!");
-        }
-
+    public double applyOperation(BinaryOperation binaryOperation, double arg1, double arg2) {
         double res;
 
         switch (binaryOperation){
@@ -19,12 +15,7 @@ public class Applier implements IApplier {
                 res = arg1 + arg2;
                 break;
             case Subtraction:
-                if (arg2 == null){
-                    res = -1*arg1;
-                }
-                else{
-                    res = arg1 - arg2;
-                }
+                res = arg1 - arg2;
                 break;
             case Multiplication:
                 res = arg1*arg2;
