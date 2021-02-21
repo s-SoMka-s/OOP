@@ -3,31 +3,121 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="0a7affa8-9ac2-46f4-8484-03630f17becb" name="Default Changelist" comment="" />
+    <list default="true" id="f8457893-5230-48eb-ad97-0d0443190d80" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="1lBDxthR3fEtIS0YGD9sX0hYf24" />
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1krT99Pk0qjc7koDfZIJcw4MFWP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager">
-    <configuration name="MyGregorianCalendarTest.AddMonthTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="task3_1" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="task3_1" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.MyGregorianCalendarTest.InWhatDayIWasBornTest">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="task3_1.Main" />
+      <module name="task3_1.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="task3_1.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyGregorianCalendarTest.HowManyDaysTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;task3_1.MyGregorianCalendarTest.AddMonthTest&quot;" />
+        <option name="scriptParameters" value="--tests &quot;task3_1.MyGregorianCalendarTest.HowManyDaysTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="MyGregorianCalendarTest.InWhatDayIWasBornTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;task3_1.MyGregorianCalendarTest.InWhatDayIWasBornTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -44,36 +134,105 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.MyGregorianCalendarTest.AddMonthTest" />
+        <item itemvalue="Gradle.MyGregorianCalendarTest.InWhatDayIWasBornTest" />
+        <item itemvalue="Gradle.MyGregorianCalendarTest.HowManyDaysTest" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0a7affa8-9ac2-46f4-8484-03630f17becb" name="Default Changelist" comment="" />
-      <created>1607061842010</created>
+      <changelist id="f8457893-5230-48eb-ad97-0d0443190d80" name="Default Changelist" comment="" />
+      <created>1606457559910</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1607061842010</updated>
+      <updated>1606457559910</updated>
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1607172706148">
+    <state x="249" y="0" key="#Project_Structure" timestamp="1606457621916">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607172706148" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1607172706148">
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1606457621916" />
+    <state x="366" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1606538737537">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1607172706148" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1607172706147">
+    <state x="366" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1606538737537" />
+    <state width="441" height="466" key="DebuggerActiveHint" timestamp="1606468584682">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1607172706147" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1607172706148">
+    <state width="441" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1606468584682" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1606543821069">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607172706148" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606543821069" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1606543821069">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606543821069" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1606543821069">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606543821069" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1606543821069">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606543821069" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1606543821064">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606543821064" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1606543821064">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1606543821064" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1606543821064">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1606543821064" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1606543821064">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1606543821064" />
+    <state x="540" y="210" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1606542339748">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="540" y="210" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1536.824@0.0.1536.824" timestamp="1606542339748" />
+    <state x="360" y="23" key="new project wizard" timestamp="1606545992110">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="360" y="23" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1606545992110" />
+    <state x="431" y="145" key="search.everywhere.popup" timestamp="1606542316903">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1606542316903" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/task3_1/MyGregorianCalendarTest.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/task3_1$MyGregorianCalendarTest_HowManyDaysTest.ic" NAME="MyGregorianCalendarTest.HowManyDaysTest Coverage Results" MODIFIED="1606542551585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
