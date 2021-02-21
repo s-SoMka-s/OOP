@@ -133,6 +133,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.MyGregorianCalendarTest.AddMonthTest" />
         <item itemvalue="Gradle.MyGregorianCalendarTest.InWhatDayIWasBornTest" />
         <item itemvalue="Gradle.MyGregorianCalendarTest.HowManyDaysTest" />
         <item itemvalue="Application.Main" />
