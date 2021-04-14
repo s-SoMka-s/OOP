@@ -1,13 +1,9 @@
 package task2_1;
 
-import org.junit.jupiter.api.parallel.Execution;
-
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
-
-import static java.lang.Thread.sleep;
 
 public class CompositeFinder {
     private final Predicate<Integer> isComposite;
@@ -19,6 +15,7 @@ public class CompositeFinder {
     /**
      * Последовательно ищем хотя-бы одно не простое число
      * в входном списке целых чисел
+     *
      * @param numbers - список целых чисел
      * @return true - если список содержит хотя-бы одно простое число
      * false - в противном случае
@@ -30,21 +27,19 @@ public class CompositeFinder {
 
     public boolean findThreads(ArrayList<Integer> numbers, int threadCnt) throws InterruptedException {
         var result = new AtomicBoolean(false);
-        var workers = new ArrayList<ThreadHandler<Integer>>();
-        for (int i = 0;i<threadCnt;i++){
-            var shiftedIterator = new ShiftedIterator(numbers.iterator(), threadCnt).getShiftedIterator();
-            var worker = new ThreadHandler<Integer>(shiftedIterator, this.isComposite, result);
-
-            workers.add(worker);
+        var queue = new ConcurrentLinkedQueue<Integer>(numbers);
+        var consumers = new ArrayList<MyConsumer<Integer>>();
+        for(var i = 0;i<threadCnt;i++){
+            var consumer = new MyConsumer<Integer>(queue, this.isComposite, result, i);
+            consumer.start();
+            consumers.add(consumer);
         }
 
-        workers.forEach(worker-> {
-            try{
-                worker.run();
-                worker.join();
-            }
-            catch (Exception e){
-                System.out.println(e);
+        consumers.forEach(c -> {
+            try {
+                c.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
@@ -54,12 +49,12 @@ public class CompositeFinder {
     /**
      * ищем хотя-бы одно не простое число
      * в входном списке целых чисел, с использование parallelStream
+     *
      * @param numbers - список целых чисел
      * @return true - если список содержит хотя-бы одно простое число
      * false - в противном случае
      */
-    public boolean findParallelStream(ArrayList<Integer> numbers)
-    {
+    public boolean findParallelStream(ArrayList<Integer> numbers) {
         return numbers.parallelStream()
                       .anyMatch(this.isComposite);
     }
