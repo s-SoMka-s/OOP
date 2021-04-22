@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import task2_2.employees.Baker;
 import task2_2.employees.Courier;
 import com.google.gson.Gson;
+import task2_2.employees.SingleBakerFactory;
+import task2_2.employees.SingleCourierFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,8 +50,9 @@ public class Pizzeria {
     }
 
     private void initBakers(long count){
+        var bakersFactory = SingleBakerFactory.getInstance();
         for (var i = 0;i<count;i++){
-            var baker = new Baker(this.stock, this.orders);
+            var baker = bakersFactory.createBaker(this.stock, this.orders);
             baker.start();
             this.bakers.add(baker);
         }
@@ -66,8 +69,9 @@ public class Pizzeria {
     }
 
     private void initCouriers(long count){
+        var courierFactory = SingleCourierFactory.getInstance();
         for (var i = 0;i<count;i++){
-            var courier = new Courier(this.stock, 1);
+            var courier = courierFactory.createCourier(this.stock, 1);
             courier.start();
             this.couriers.add(courier);
         }

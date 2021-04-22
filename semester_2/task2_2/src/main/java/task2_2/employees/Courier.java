@@ -8,13 +8,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Courier extends Thread {
     private final LinkedBlockingQueue<Order> stock;
-    private final Long capacity;
+    private final long capacity;
+    private final long id;
     private boolean isFree;
 
-    public Courier (LinkedBlockingQueue<Order> stock, long capacity){
+    public Courier (long id, LinkedBlockingQueue<Order> stock, long capacity){
         this.stock = stock;
         this.capacity = capacity;
         this.isFree = true;
+        this.id = id;
     }
 
     @Override

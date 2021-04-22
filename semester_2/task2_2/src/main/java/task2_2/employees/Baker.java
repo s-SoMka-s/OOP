@@ -8,12 +8,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Baker extends Thread {
     private final LinkedBlockingQueue<Order> stock;
     private final LinkedBlockingQueue<Order> orders;
+    private final long Id;
     private boolean isFree;
 
-    public Baker(LinkedBlockingQueue<Order> stock, LinkedBlockingQueue<Order> orders){
+    public Baker(long id, LinkedBlockingQueue<Order> stock, LinkedBlockingQueue<Order> orders){
         this.stock = stock;
         this.orders = orders;
         this.isFree = true;
+        this.Id = id;
     }
 
     @Override
