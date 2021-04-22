@@ -1,7 +1,7 @@
 package task2_2;
 
 public enum OrderStatus {
-    Opened,
+    Created,
     Baked,
     WaitingForDelivery,
     Delivering,

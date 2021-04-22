@@ -19,10 +19,13 @@ public class Baker extends Thread {
     @Override
     public void run() {
         while(this.canNext()){
-            var order = this.orders.remove();
             try {
+                var order = this.orders.take();
+                order.Status = OrderStatus.Baked;
+                System.out.println(order.Id + " change status to " + order.Status);
                 this.bake(order);
                 order.Status = OrderStatus.WaitingForDelivery;
+                System.out.println(order.Id + " change status to " + order.Status);
                 this.stock.put(order);
             } catch (InterruptedException e) {
                 e.printStackTrace();

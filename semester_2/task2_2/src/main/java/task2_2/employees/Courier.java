@@ -32,8 +32,10 @@ public class Courier extends Thread {
 
     private ArrayList<Order> takeWhileCan() throws InterruptedException {
         var bag = new ArrayList<Order>();
-        while(this.capacity > 0) {
+        var ordersCount = 0;
+        while(this.capacity > ordersCount) {
             bag.add(this.stock.take());
+            ordersCount += 1;
         }
 
         return bag;
@@ -43,8 +45,10 @@ public class Courier extends Thread {
         isFree = false;
         for (var order : orders) {
             order.Status = OrderStatus.Delivering;
+            System.out.println(order.Id + " change status to " + order.Status);
             Thread.sleep(2000);
             order.Status = OrderStatus.Closed;
+            System.out.println(order.Id + " change status to " + order.Status);
         }
     }
 
