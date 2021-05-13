@@ -54,5 +54,6 @@ public class GameEngine {
         System.out.println("asdad");
         this.gameDrawer.drawBackground();
         this.gameDrawer.drawSnake();
+        this.snake.move();
     }
 }

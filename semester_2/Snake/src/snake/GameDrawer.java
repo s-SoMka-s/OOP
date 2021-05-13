@@ -4,7 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,15 +13,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.LinkedList;
 
 public class GameDrawer {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = WIDTH;
-    private static final int ROWS = 20;
-    private static final int COLUMNS = ROWS;
-    private static final int SQUARE_SIZE = WIDTH / ROWS;
     private final Snake snake = Snake.getInstance();
     private final GameEngine engine = GameEngine.getInstance();
     private GraphicsContext context;
@@ -34,7 +29,7 @@ public class GameDrawer {
         stage.show();
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
         var timeline = new Timeline(new KeyFrame(Duration.millis(130), e -> this.engine.run(context)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -44,7 +39,7 @@ public class GameDrawer {
         var loader = new FXMLLoader(getClass().getResource("level.fxml"));
         var root = (Pane) loader.load();
         var snakeField = (Pane) root.getChildren().get(0);
-        var canvas = new Canvas(WIDTH,HEIGHT);
+        var canvas = new Canvas(GameProperties.SnakeFieldWidth, GameProperties.SnakeFieldHeight);
 
         snakeField.getChildren().add(canvas);
         this.context = canvas.getGraphicsContext2D();
@@ -52,32 +47,42 @@ public class GameDrawer {
         return root;
     }
 
-    public void drawBackground(){
-        this.context.setStroke(Color.DARKGREY);
+    public void drawBackground() {
+        this.context.setFill(Color.web("AAD751"));
 
-        for (int y = 0;y<15*20;y+=20){
-            for (int x = 0;x<20*20;x+=20){
-                this.context.strokeRect(y, x, 20, 20);
+        for (int y = 0; y < GameProperties.SnakeFieldHeight; y += 20) {
+            for (int x = 0; x < GameProperties.SnakeFieldWidth; x += 20) {
+                this.context.fillRect(y, x, GameProperties.SnakeFieldSquareSize, GameProperties.SnakeFieldSquareSize);
             }
         }
     }
 
-    public void drawSnake(){
+    public void drawSnake() {
         this.drawHead();
         var snakeBody = this.snake.getSnakeChain();
         this.drawBody(snakeBody);
     }
 
-    private void drawHead(){
+    private void drawHead() {
         var head = this.snake.getHead();
         this.context.setFill(Color.web("4674E9"));
-        this.context.fillRoundRect(head.getLayoutX() * SQUARE_SIZE, head.getLayoutY() * SQUARE_SIZE, SQUARE_SIZE - 1, SQUARE_SIZE - 1, 35, 35);
+        var x = head.getX() * GameProperties.SnakeFieldSquareSize;
+        var y = head.getY() * GameProperties.SnakeFieldSquareSize;
+
+        var width = GameProperties.SnakeFieldSquareSize;
+        var height = GameProperties.SnakeFieldSquareSize;
+        this.context.fillRoundRect(x, y, width, height, 35, 35);
     }
 
-    private void drawBody(LinkedList<Node> snakeBody) {
-        for (var elem: snakeBody.subList(1, snakeBody.size())) {
-            this.context.fillRoundRect(elem.getLayoutX() * SQUARE_SIZE, elem.getLayoutY() * SQUARE_SIZE, SQUARE_SIZE - 1,
-                    SQUARE_SIZE - 1, 20, 20);
+    private void drawBody(LinkedList<Point> snakeBody) {
+        for (var elem : snakeBody.subList(1, snakeBody.size())) {
+            var x = elem.getX() * GameProperties.SnakeFieldSquareSize;
+            var y = elem.getY() * GameProperties.SnakeFieldSquareSize;
+
+            var width = GameProperties.SnakeFieldSquareSize;
+            var height = GameProperties.SnakeFieldSquareSize;
+            this.context.fillRoundRect(x, y, width,
+                    height, GameProperties.SnakeFieldSquareSize, GameProperties.SnakeFieldSquareSize);
         }
     }
 
