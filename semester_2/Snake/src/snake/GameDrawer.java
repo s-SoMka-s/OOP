@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class GameDrawer {
@@ -109,5 +110,13 @@ public class GameDrawer {
                     break;
             }
         });
+    }
+
+    public void drawFood(ArrayList<Food> food) {
+        for(var elem : food){
+            var x = elem.getX() * GameProperties.SnakeFieldSquareSize;
+            var y = elem.getY() * GameProperties.SnakeFieldSquareSize;
+            this.context.drawImage(elem.getImage(), x, y, GameProperties.SnakeFieldSquareSize, GameProperties.SnakeFieldSquareSize);
+        }
     }
 }

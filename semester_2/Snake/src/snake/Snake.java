@@ -1,6 +1,7 @@
 package snake;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Snake {
@@ -31,7 +32,6 @@ public class Snake {
     }
 
     public void setDirection(Direction newDirection) {
-        System.out.println(newDirection);
         this.direction = newDirection;
         return;
     }
@@ -92,5 +92,41 @@ public class Snake {
             head.y = GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize - 1;
             return;
         }
+    }
+
+    public boolean wasEaten(ArrayList<Food> food){
+        var head = this.getHead();
+
+        for (var elem : food){
+            if (elem.getX() == head.x && elem.getY() == head.y) {
+                food.remove(elem);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isCrossed(int x, int y) {
+        for (var elem : this.snakeChain) {
+            if (elem.getX() == x && elem.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void grow(){
+        // Need to implement normal grow logic
+        // Now new elem places on tail position
+
+        var tail = this.tail();
+        var elem = new Point();
+
+        this.snakeChain.add(elem);
+    }
+
+    private Point tail(){
+        return this.snakeChain.getLast();
     }
 }

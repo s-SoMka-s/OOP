@@ -8,11 +8,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 // Singleton
 public class GameEngine {
     private static GameEngine instance;
     private GameDrawer gameDrawer;
+    private FoodGenerator foodGenerator;
+    private final ArrayList<Food> food = new ArrayList<>();
     private Stage stage;
     private Snake snake;
 
@@ -40,6 +43,11 @@ public class GameEngine {
 
     public void startNewGame() throws IOException {
         this.snake = Snake.getInstance();
+        this.foodGenerator = new FoodGenerator();
+
+        var food = this.foodGenerator.generate();
+        this.food.add(food);
+
         this.gameDrawer = new GameDrawer(this.stage);
         this.gameDrawer.startAnimation();
     }
@@ -51,9 +59,12 @@ public class GameEngine {
     }
 
     public void run(GraphicsContext context) {
-        System.out.println("asdad");
         this.gameDrawer.drawBackground();
+        this.gameDrawer.drawFood(this.food);
         this.gameDrawer.drawSnake();
         this.snake.move();
+        if (this.snake.wasEaten(this.food)){
+            System.out.println("was eaten!");
+        }
     }
 }
