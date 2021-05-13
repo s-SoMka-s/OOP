@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 // Singleton
-public class GameEngine {
+public class GameEngine implements SnakeEventListener {
     private static GameEngine instance;
     private GameDrawer gameDrawer;
     private FoodGenerator foodGenerator;
@@ -63,8 +63,15 @@ public class GameEngine {
         this.gameDrawer.drawFood(this.food);
         this.gameDrawer.drawSnake();
         this.snake.move();
-        if (this.snake.wasEaten(this.food)){
-            System.out.println("was eaten!");
-        }
+    }
+
+    @Override
+    public void foodWasEaten() {
+        var food = this.foodGenerator.generate();
+        this.food.add(food);
+    }
+
+    public ArrayList<Food> getFood() {
+        return this.food;
     }
 }

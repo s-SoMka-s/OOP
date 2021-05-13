@@ -92,19 +92,21 @@ public class Snake {
             head.y = GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize - 1;
             return;
         }
+
+        this.wasEaten();
     }
 
-    public boolean wasEaten(ArrayList<Food> food){
+    private void wasEaten(){
+        var food = this.engine.getFood();
         var head = this.getHead();
 
         for (var elem : food){
             if (elem.getX() == head.x && elem.getY() == head.y) {
                 food.remove(elem);
-                return true;
+                this.engine.foodWasEaten();
+                return;
             }
         }
-
-        return false;
     }
 
     public boolean isCrossed(int x, int y) {

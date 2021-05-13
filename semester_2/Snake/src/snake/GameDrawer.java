@@ -31,7 +31,7 @@ public class GameDrawer {
     }
 
     public void startAnimation() {
-        var timeline = new Timeline(new KeyFrame(Duration.millis(130), e -> this.engine.run(context)));
+        var timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> this.engine.run(context)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
