@@ -1,5 +1,6 @@
 package snake;
 
 public enum FoodEffect {
-    Grow
+    Grow,
+    SpeedUp
 }

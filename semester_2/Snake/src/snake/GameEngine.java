@@ -16,6 +16,7 @@ public class GameEngine implements SnakeEventListener {
     private GameDrawer gameDrawer;
     private FoodGenerator foodGenerator;
     private final ArrayList<Food> food = new ArrayList<>();
+    private int score = 0;
     private Stage stage;
     private Snake snake;
 
@@ -62,13 +63,30 @@ public class GameEngine implements SnakeEventListener {
         this.gameDrawer.drawBackground();
         this.gameDrawer.drawFood(this.food);
         this.gameDrawer.drawSnake();
+        this.gameDrawer.drawInfo(this.score, this.snake.getSnakeChain().size());
         this.snake.move();
     }
 
     @Override
-    public void foodWasEaten() {
-        var food = this.foodGenerator.generate();
-        this.food.add(food);
+    public void wasEaten(Food food) {
+        this.score += 10;
+        var newFood = this.foodGenerator.generate();
+        this.food.add(newFood);
+    }
+
+    @Override
+    public void wasGrew(){
+        System.out.println("Snake was grew!");
+    }
+
+    @Override
+    public void ateItself() {
+        System.out.println("Snake was ate itself!");
+    }
+
+    @Override
+    public void speedUp() {
+        GameProperties.DURATION -= GameProperties.DurationDecreasingValue;
     }
 
     public ArrayList<Food> getFood() {

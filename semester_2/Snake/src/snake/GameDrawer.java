@@ -8,19 +8,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class GameDrawer {
     private final Snake snake = Snake.getInstance();
     private final GameEngine engine = GameEngine.getInstance();
+    private Pane infoBar;
     private GraphicsContext context;
 
     public GameDrawer(Stage stage) throws IOException {
@@ -31,7 +31,7 @@ public class GameDrawer {
     }
 
     public void startAnimation() {
-        var timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> this.engine.run(context)));
+        var timeline = new Timeline(new KeyFrame(Duration.millis(GameProperties.DURATION), e -> this.engine.run(context)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -40,6 +40,7 @@ public class GameDrawer {
         var loader = new FXMLLoader(getClass().getResource("level.fxml"));
         var root = (Pane) loader.load();
         var snakeField = (Pane) root.getChildren().get(0);
+        this.infoBar = (Pane) root.getChildren().get(1);
         var canvas = new Canvas(GameProperties.SnakeFieldWidth, GameProperties.SnakeFieldHeight);
 
         snakeField.getChildren().add(canvas);
@@ -58,33 +59,43 @@ public class GameDrawer {
         }
     }
 
+    public void drawInfo(long score, long snakeLength) {
+        var scoreLabel = (Label) this.infoBar.getChildren().get(1);
+        scoreLabel.setText(String.valueOf(score));
+
+        var lengthLabel = (Label) this.infoBar.getChildren().get(3);
+        lengthLabel.setText(String.valueOf(snakeLength));
+    }
+
+
+
     public void drawSnake() {
         this.drawHead();
-        var snakeBody = this.snake.getSnakeChain();
-        this.drawBody(snakeBody);
+        this.snake
+                .getSnakeChain()
+                .stream()
+                .skip(1)
+                .forEach(x -> drawBody(x));
     }
 
     private void drawHead() {
         var head = this.snake.getHead();
         this.context.setFill(Color.web("4674E9"));
-        var x = head.getX() * GameProperties.SnakeFieldSquareSize;
-        var y = head.getY() * GameProperties.SnakeFieldSquareSize;
+        var x = head.x * GameProperties.SnakeFieldSquareSize;
+        var y = head.y * GameProperties.SnakeFieldSquareSize;
 
         var width = GameProperties.SnakeFieldSquareSize;
         var height = GameProperties.SnakeFieldSquareSize;
         this.context.fillRoundRect(x, y, width, height, 35, 35);
     }
 
-    private void drawBody(LinkedList<Point> snakeBody) {
-        for (var elem : snakeBody.subList(1, snakeBody.size())) {
-            var x = elem.getX() * GameProperties.SnakeFieldSquareSize;
-            var y = elem.getY() * GameProperties.SnakeFieldSquareSize;
+    private void drawBody(SnakeBody body) {
+        var x = body.x * GameProperties.SnakeFieldSquareSize;
+        var y = body.y * GameProperties.SnakeFieldSquareSize;
 
-            var width = GameProperties.SnakeFieldSquareSize;
-            var height = GameProperties.SnakeFieldSquareSize;
-            this.context.fillRoundRect(x, y, width,
-                    height, GameProperties.SnakeFieldSquareSize, GameProperties.SnakeFieldSquareSize);
-        }
+        var width = GameProperties.SnakeFieldSquareSize;
+        var height = GameProperties.SnakeFieldSquareSize;
+        this.context.fillRoundRect(x, y, width, height, 35, 35);
     }
 
     public void setKeyHandler(Scene scene) {
@@ -113,7 +124,7 @@ public class GameDrawer {
     }
 
     public void drawFood(ArrayList<Food> food) {
-        for(var elem : food){
+        for (var elem : food) {
             var x = elem.getX() * GameProperties.SnakeFieldSquareSize;
             var y = elem.getY() * GameProperties.SnakeFieldSquareSize;
             this.context.drawImage(elem.getImage(), x, y, GameProperties.SnakeFieldSquareSize, GameProperties.SnakeFieldSquareSize);

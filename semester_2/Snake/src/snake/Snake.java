@@ -1,22 +1,22 @@
 package snake;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Snake {
     private final GameEngine engine;
     private static Snake instance;
-    private final LinkedList<Point> snakeChain = new LinkedList<>();
+    private final LinkedList<SnakeBody> snakeChain = new LinkedList<>();
     private Direction direction;
-    private int BLOCK_SIZE = 20;
 
     private Snake() {
         this.engine = GameEngine.getInstance();
         this.direction = Direction.RIGHT;
-        var head = new Point(5, 10);
-
+        var head = new SnakeBody(7, 10, Direction.RIGHT);
+        var body = new SnakeBody(6, 10,Direction.RIGHT);
+        var body1 = new SnakeBody(5, 10,Direction.RIGHT);
         this.snakeChain.add(head);
+        this.snakeChain.add(body);
+        this.snakeChain.add(body1);
     }
 
     public static Snake getInstance() {
@@ -37,98 +37,124 @@ public class Snake {
     }
 
     public void move() {
-        switch (this.direction) {
-            case UP:
-                this.snakeChain.getFirst().y--;
-                break;
-            case DOWN:
-                this.snakeChain.getFirst().y++;
-                break;
-            case LEFT:
-                this.snakeChain.getFirst().x--;
-                break;
-            case RIGHT:
-                this.snakeChain.getFirst().x++;
-                break;
+        var head = this.snakeChain.getFirst();
+        this.move(head, this.direction);
+
+        for (int i = 1; i < this.snakeChain.size(); i++) {
+            var next = this.snakeChain.get(i-1);
+            var cur = this.snakeChain.get(i);
+
+            if (this.direction == Direction.UP){
+                System.out.println(111);
+            }
+
+            cur = this.move(cur, next.lastDirection);
         }
 
-        this.ensureHeadPositionValid();
+        this.ensureFoodAte();
+        this.ensureNotAteItself();
     }
 
-    public int getBlockSize() {
-        return this.BLOCK_SIZE;
+    private SnakeBody move(SnakeBody body, Direction direction) {
+        var lastDirection = body.direction;
+        switch (direction) {
+            case UP:
+                body.y--;
+                body.direction = Direction.UP;
+                break;
+            case DOWN:
+                body.y++;
+                body.direction = Direction.DOWN;
+                break;
+            case LEFT:
+                body.x--;
+                body.direction = Direction.LEFT;
+                break;
+            case RIGHT:
+                body.x++;
+                body.direction = Direction.RIGHT;
+                break;
+        }
+        body.lastDirection = lastDirection;
+
+        this.ensurePositionOnField(body);
+
+        return body;
     }
 
-    public Point getHead() {
+    public SnakeBody getHead() {
         return this.snakeChain.peek();
     }
 
-    public LinkedList<Point> getSnakeChain() {
+    public LinkedList<SnakeBody> getSnakeChain() {
         return this.snakeChain;
     }
 
-    public int getLength() {
-        return this.snakeChain.size();
+    private void ensurePositionOnField(SnakeBody body) {
+        if (body.x >= GameProperties.SnakeFieldWidth / GameProperties.SnakeFieldSquareSize) {
+            body.x = 0;
+            return;
+        }
+
+        if (body.x < 0) {
+            body.x = GameProperties.SnakeFieldWidth / GameProperties.SnakeFieldSquareSize - 1;
+            return;
+        }
+
+        if (body.y >= GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize) {
+            body.y = 0;
+            return;
+        }
+
+        if (body.y < 0) {
+            body.y = GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize - 1;
+            return;
+        }
     }
 
-    private void ensureHeadPositionValid(){
+    private void ensureNotAteItself(){
         var head = this.getHead();
-        if (head.x >= GameProperties.SnakeFieldWidth / GameProperties.SnakeFieldSquareSize){
-            head.x = 0;
-            return;
-        }
 
-        if (head.x < 0) {
-            head.x = GameProperties.SnakeFieldWidth / GameProperties.SnakeFieldSquareSize - 1;
-            return;
-        }
+        var flag = this.snakeChain
+                                .stream()
+                                .skip(1)
+                                .anyMatch(e -> Utils.isCrossing(head, e));
 
-        if (head.y >= GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize){
-            head.y = 0;
-            return;
+        if (flag) {
+            this.engine.ateItself();
         }
-
-        if (head.y < 0) {
-            head.y = GameProperties.SnakeFieldHeight / GameProperties.SnakeFieldSquareSize - 1;
-            return;
-        }
-
-        this.wasEaten();
     }
 
-    private void wasEaten(){
+    private void ensureFoodAte() {
         var food = this.engine.getFood();
         var head = this.getHead();
 
-        for (var elem : food){
+        for (var elem : food) {
             if (elem.getX() == head.x && elem.getY() == head.y) {
+                this.chooseBehavior(elem);
                 food.remove(elem);
-                this.engine.foodWasEaten();
+                this.engine.wasEaten(elem);
                 return;
             }
         }
     }
 
-    public boolean isCrossed(int x, int y) {
-        for (var elem : this.snakeChain) {
-            if (elem.getX() == x && elem.getY() == y) {
-                return true;
-            }
+    private void chooseBehavior(Food food) {
+        var effect = food.getEffect();
+        switch (effect) {
+            case Grow -> this.grow();
+            case SpeedUp -> this.engine.speedUp();
         }
-        return false;
     }
 
-    public void grow(){
-        // Need to implement normal grow logic
-        // Now new elem places on tail position
+    public void grow() {
+        var tail = tail();
+        var newTail = new SnakeBody(tail);
 
-        var tail = this.tail();
-        var elem = new Point();
-
-        this.snakeChain.add(elem);
+        this.snakeChain.add(newTail);
     }
 
-    private Point tail(){
+    private SnakeBody tail() {
         return this.snakeChain.getLast();
     }
 }
